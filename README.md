@@ -1,20 +1,20 @@
-#Simple Forum
+# Simple Forum
 A simple forum app made with Nodejs, ExpressJs, NextJs, ReactJs, AntDesign
 
-#Requirements
+# Requirements
 
 * Node.js & NPM v8.4.0
 * Mongo 2.2.3
 * Maildev
 
-#Install
+# Install
 
 * Clone this repo
 * Run `npm install` to install dependencies
 * Run `npm run dep` to run dependencies like mongo and maildev, don't forget to enter root password
   after running command for mongo.
 
-#Run
+# Run
 
 * Copy file `.env.example` to `.env` and change env details if needed
 * After doing seed and running dependencies, run `npm start`
