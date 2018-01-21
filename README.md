@@ -1,4 +1,5 @@
-#CanteenMS
+#Simple Forum
+A simple forum app made with Nodejs, ExpressJs, NextJs, ReactJs, AntDesign
 
 #Requirements
 
@@ -12,7 +13,6 @@
 * Run `npm install` to install dependencies
 * Run `npm run dep` to run dependencies like mongo and maildev, don't forget to enter root password
   after running command for mongo.
-* Run `npm run seed` to seed database on another terminal
 
 #Run
 
