@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
 import { Row, Col, Card, message } from 'antd';
-import { setToken } from '../core/helpers';
 import Head from 'next/head';
 import Router from 'next/router';
+import withRedux from 'next-redux-wrapper';
+import { setToken } from '../core/helpers';
 import App from '../App';
 import RegisterForm from '../components/forms/RegisterForm';
 import { register, login } from '../api/calls';
+import makeStore from '../store/index';
 
 class Register extends React.Component {
   constructor() {
@@ -23,7 +25,7 @@ class Register extends React.Component {
         }
 
         return register(values)
-          .then((result) => {
+          .then(() => {
             message.success('You have been register successfully.');
             setTimeout(() => {
               const { email, password } = values;
@@ -33,14 +35,21 @@ class Register extends React.Component {
                     pathname: '/',
                   });
                   setToken(data.token);
+                  window.location.reload();
                 })
                 .catch((error) => {
-                  message.error(error.response ? error.response.data.message : error.message);
+                  message.error(
+                    error.response
+                      ? error.response.data.message
+                      : error.message,
+                  );
                 });
             }, 2000);
           })
           .catch((error) => {
-            message.error(error.response ? error.response.data.message : error.message);
+            message.error(
+              error.response ? error.response.data.message : error.message,
+            );
           });
       });
     };
@@ -67,4 +76,7 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const RegisterWrapped = withRedux(makeStore, (state) => ({
+  user: state.user,
+}))(Register);
+export default RegisterWrapped;

@@ -22,9 +22,18 @@ api.patch('/posts/:id', requestValidator(postSchema), post.update);
 api.delete('/posts/:id', post.destroy);
 
 /* Routes for comments resource */
-api.get('/posts/:postId/comments', comment.index);
-api.post('/posts/:postId/comments', requestValidator(commentSchema), postExist, comment.create);
-api.patch('/posts/:postId/comments/:commentId', requestValidator(commentSchema), postExist, comment.update);
-api.delete('/posts/:postId/comments/:commentId', postExist, comment.destroy);
+api.post(
+  '/post/:postId/comments',
+  requestValidator(commentSchema),
+  postExist,
+  comment.create,
+);
+api.patch(
+  '/post/:postId/comments/:commentId',
+  requestValidator(commentSchema),
+  postExist,
+  comment.update,
+);
+api.delete('/post/:postId/comments/:commentId', postExist, comment.destroy);
 
 module.exports = api;

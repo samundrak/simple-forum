@@ -1,24 +1,21 @@
 import React, { Component, Fragment } from 'react';
-import renderIf from 'render-if';
 import { Row, Col, Card, message } from 'antd';
+import autoBind from 'auto-bind';
+import Router from 'next/router';
+import withRedux from 'next-redux-wrapper';
 import Head from 'next/head';
 import App from '../App';
 import AddPostForm from '../components/forms/AddPostForm';
 import { postNewPost } from '../api/calls';
+import makeStore from '../store/index';
 
 class AddPost extends Component {
   constructor() {
     super();
+    autoBind(this);
     this.state = {
-      shouldMountEditor: false,
+      editorState: {},
     };
-  }
-  onEditorChange = editorState => this.setState({ editorState });
-  componentDidMount() {
-    this.setState({
-      shouldMountEditor: true,
-      editorState: '',
-    });
   }
   onSubmit(validateFields) {
     return (event) => {
@@ -31,9 +28,10 @@ class AddPost extends Component {
         postNewPost(values)
           .then(() => {
             message.info('New Post has been added.');
+            Router.push('/');
           })
-          .catch((error) => {
-            message.error(error.response.data.message);
+          .catch((err) => {
+            message.error(err.response.data.message);
           });
       });
     };
@@ -49,9 +47,12 @@ class AddPost extends Component {
             <Col span={2} />
             <Col span={20}>
               <Card title="Add New Post">
-                {renderIf(this.state.shouldMountEditor)(
-                  <AddPostForm editorState={this.state.editorState} onEditorChange={this.onEditorChange} onSubmit={this.onSubmit.bind(this)} />,
-                )}
+                <AddPostForm
+                  title={'Add'}
+                  editorState={this.state.editorState}
+                  onEditorChange={this.onEditorChange}
+                  onSubmit={this.onSubmit}
+                />
               </Card>
             </Col>
             <Col span={2} />
@@ -62,4 +63,7 @@ class AddPost extends Component {
   }
 }
 
-export default AddPost;
+const AddPostWrapped = withRedux(makeStore, (state) => ({
+  user: state.user,
+}))(AddPost);
+export default AddPostWrapped;

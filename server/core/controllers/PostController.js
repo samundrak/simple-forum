@@ -3,7 +3,7 @@ const PostRepository = require('../repositories/PostRepository');
 module.exports = {
   index(req, res) {
     return PostRepository.all()
-      .then(data => res.status(201).json(data))
+      .then((data) => res.status(201).json(data))
       .catch(() => res.boom.badImplementation());
   },
 
@@ -22,7 +22,7 @@ module.exports = {
 
   create(req, res) {
     return PostRepository.create({ ...req.body, user_id: req.user._id })
-      .then(data => res.status(201).json(data))
+      .then((data) => res.status(201).json(data))
       .catch((reason) => {
         if (typeof reason === 'object') {
           return res.boom.badImplementation(reason.message);
@@ -33,7 +33,7 @@ module.exports = {
 
   async update({ params: { id: postId }, body, user }, res) {
     const post = await PostRepository.findOne({ _id: postId });
-    if (post.user_id !== user._id.toString()) {
+    if (post.user_id.toString() !== user._id.toString()) {
       return res.boom.unauthorized();
     }
 
@@ -53,7 +53,7 @@ module.exports = {
 
   async destroy({ params: { id: postId }, body, user }, res) {
     const post = await PostRepository.findOne({ _id: postId });
-    if (post.user_id !== user._id.toString()) {
+    if (post.user_id.toString() !== user._id.toString()) {
       return res.boom.unauthorized();
     }
     try {

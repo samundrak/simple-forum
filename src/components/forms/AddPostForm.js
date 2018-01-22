@@ -1,20 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 
 const FormItem = Form.Item;
 
-const AddPostForm = ({ editorState, onEditorChange, onSubmit, form: { getFieldDecorator, validateFields } }) => (
+const AddPostForm = ({
+  editorState,
+  onSubmit,
+  form: { getFieldDecorator, validateFields },
+}) => (
   <Form className="register-form" onSubmit={onSubmit(validateFields)}>
     <FormItem>
       Title
       {getFieldDecorator('title', {
+        initialValue: editorState.title,
         rules: [{ required: true, message: 'Please input your title!' }],
       })(<Input placeholder="Title" />)}
     </FormItem>
     <FormItem>
       Description
       {getFieldDecorator('description', {
+        initialValue: editorState.description,
         rules: [{ required: true, message: 'Please add post details!' }],
       })(<Input.TextArea rows={4} />)}
     </FormItem>
@@ -26,7 +32,14 @@ const AddPostForm = ({ editorState, onEditorChange, onSubmit, form: { getFieldDe
   </Form>
 );
 
+AddPostForm.defaultProps = {
+  editorState: {},
+  title: 'Add',
+};
 AddPostForm.propTypes = {
+  title: PropTypes.string,
+  editorState: PropTypes.object,
+  onSubmit: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired,
 };
 const WrappedLoginForm = Form.create()(AddPostForm);

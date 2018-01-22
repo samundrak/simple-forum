@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 
 const { Header, Content, Footer } = Layout;
 
-const SimpleLayout = ({ children, user }) => (
+const SimpleLayout = ({ children, user, handleMenuClick }) => (
   <Fragment>
     <style global jsx>
       {antCss}
@@ -18,19 +18,24 @@ const SimpleLayout = ({ children, user }) => (
     </Head>
     <Header className="header">
       <div className="logo" />
-      <Navbar user={user} />
+      <Navbar user={user} handleMenuClick={handleMenuClick} />
     </Header>
     <Content style={{ padding: '0 50px' }}>
       <Layout style={{ padding: '24px 0', background: '#fff' }}>
-        <Content style={{ padding: '0 24px', minHeight: 280 }}>{React.cloneElement(children, { user })}</Content>
+        <Content style={{ padding: '0 24px', minHeight: 280 }}>
+          {React.cloneElement(children, { user })}
+        </Content>
       </Layout>
     </Content>
-    <Footer style={{ textAlign: 'center' }}>Simple Forum made with (Node, Express, Next.js, React.js, AntDesign)</Footer>
+    <Footer style={{ textAlign: 'center' }}>
+      Simple Forum made with (Node, Express, Next.js, React.js, AntDesign)
+    </Footer>
   </Fragment>
 );
 
 SimpleLayout.propTypes = {
   children: propTypes.element.isRequired,
   user: propTypes.object.isRequired,
+  handleMenuClick: propTypes.func.isRequired,
 };
 export default SimpleLayout;

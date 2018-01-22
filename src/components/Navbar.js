@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import renderIf from 'render-if';
 import PropTypes from 'prop-types';
 import { Menu, Icon } from 'antd';
@@ -6,8 +6,13 @@ import Link from 'next/link';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-const Navbar = ({ user }) => (
-  <Menu theme="dark" mode="horizontal" style={{ lineHeight: '64px' }}>
+const Navbar = ({ user, handleMenuClick }) => (
+  <Menu
+    onClick={handleMenuClick}
+    theme="dark"
+    mode="horizontal"
+    style={{ lineHeight: '64px' }}
+  >
     <Menu.Item key="1">
       <Link href="/">
         <a>Home</a>
@@ -52,5 +57,6 @@ const Navbar = ({ user }) => (
 );
 Navbar.propTypes = {
   user: PropTypes.object.isRequired,
+  handleMenuClick: PropTypes.func.isRequired,
 };
 export default Navbar;

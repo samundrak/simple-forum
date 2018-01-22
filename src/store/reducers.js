@@ -1,8 +1,7 @@
 import * as CONST from './const';
 
 const initialState = {
-  user: null,
-  posts: [],
+  user: {},
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {

@@ -2,10 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { Row, Col, Card, message } from 'antd';
 import Head from 'next/head';
 import Router from 'next/router';
+import withRedux from 'next-redux-wrapper';
 import { setToken } from '../core/helpers';
 import App from '../App';
 import LoginForm from '../components/forms/LoginForm';
 import { login } from '../api/calls';
+import makeStore from '../store/index';
 
 class Login extends Component {
   constructor() {
@@ -31,9 +33,12 @@ class Login extends Component {
               pathname: '/',
             });
             setToken(data.token);
+            window.location.reload();
           })
           .catch((error) => {
-            message.error(error.response ? error.response.data.message : error.message);
+            message.error(
+              error.response ? error.response.data.message : error.message,
+            );
           });
       });
     };
@@ -60,4 +65,7 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const LoginWrapped = withRedux(makeStore, (state) => ({
+  user: state.user,
+}))(Login);
+export default LoginWrapped;

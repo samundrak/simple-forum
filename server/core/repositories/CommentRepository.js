@@ -1,9 +1,10 @@
 const CommentModel = require('../model/Comment');
 
 class CommentRepository {
-
   static all(postId) {
-    return CommentModel.find({ post_id: postId, is_deleted: 0 });
+    return CommentModel.find({ post_id: postId, is_deleted: 0 }).populate(
+      'users',
+    );
   }
 
   static create(comment) {
@@ -11,7 +12,7 @@ class CommentRepository {
   }
 
   static findOne(clause) {
-    return CommentModel.findOne({ ...clause, is_deleted: 0 });
+    return CommentModel.findOne({ ...clause, is_deleted: 0 }).populate('users');
   }
 }
 

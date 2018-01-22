@@ -16,13 +16,13 @@ const commentController = {
   },
   async create(req, res) {
     try {
-      const comment = CommentRepository.create({
+      const comment = await CommentRepository.create({
         ...req.body,
         user_id: req.user._id,
         post_id: req.params.postId,
       });
       if (comment) {
-        return res.status(201).send();
+        return res.status(201).json(comment);
       }
 
       throw new Error('Unable to create comment');
@@ -42,8 +42,9 @@ const commentController = {
         return res.boom.unauthorized();
       }
 
-      if (await comment.update(req.body)) {
-        return res.status(200).send();
+      const newComment = await comment.update(req.body);
+      if (newComment) {
+        return res.status(200).json(newComment);
       }
 
       return res.boom.badImplementation();
