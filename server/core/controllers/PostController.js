@@ -1,17 +1,15 @@
 const PostRepository = require('../repositories/PostRepository');
 
 module.exports = {
-
   index(req, res) {
-    return PostRepository
-      .all()
+    return PostRepository.all()
       .then(data => res.status(201).json(data))
       .catch(() => res.boom.badImplementation());
   },
 
   async show(req, res) {
     try {
-      const post = await PostRepository.findOne({ _id: req.params.id, user_id: req.user._id });
+      const post = await PostRepository.findOne({ _id: req.params.id });
       if (post) {
         return res.json(post);
       }
@@ -23,8 +21,7 @@ module.exports = {
   },
 
   create(req, res) {
-    return PostRepository
-      .create({ ...req.body, user_id: req.user._id })
+    return PostRepository.create({ ...req.body, user_id: req.user._id })
       .then(data => res.status(201).json(data))
       .catch((reason) => {
         if (typeof reason === 'object') {
@@ -74,4 +71,3 @@ module.exports = {
     }
   },
 };
-

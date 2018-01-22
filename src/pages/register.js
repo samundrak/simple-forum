@@ -1,33 +1,53 @@
 import React, { Fragment } from 'react';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, message } from 'antd';
+import { setToken } from '../core/helpers';
 import Head from 'next/head';
-import Layout from '../components/Layout';
+import Router from 'next/router';
+import App from '../App';
 import RegisterForm from '../components/forms/RegisterForm';
+import { register, login } from '../api/calls';
 
 class Register extends React.Component {
   constructor() {
     super();
     this.state = {
-      form: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-      },
+      form: {},
     };
   }
   handleSubmit(validateFields) {
     return (event) => {
       event.preventDefault();
       validateFields((err, values) => {
-        console.log(err, values);
+        if (err) {
+          return false;
+        }
+
+        return register(values)
+          .then((result) => {
+            message.success('You have been register successfully.');
+            setTimeout(() => {
+              const { email, password } = values;
+              login({ email, password })
+                .then(({ data }) => {
+                  Router.push({
+                    pathname: '/',
+                  });
+                  setToken(data.token);
+                })
+                .catch((error) => {
+                  message.error(error.response ? error.response.data.message : error.message);
+                });
+            }, 2000);
+          })
+          .catch((error) => {
+            message.error(error.response ? error.response.data.message : error.message);
+          });
       });
-      console.log(event);
     };
   }
   render() {
     return (
-      <Layout>
+      <App>
         <Fragment>
           <Head>
             <title>Register</title>
@@ -42,7 +62,7 @@ class Register extends React.Component {
             <Col span={8} />
           </Row>
         </Fragment>
-      </Layout>
+      </App>
     );
   }
 }
