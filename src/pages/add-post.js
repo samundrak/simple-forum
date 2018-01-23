@@ -47,12 +47,7 @@ class AddPost extends Component {
             <Col span={2} />
             <Col span={20}>
               <Card title="Add New Post">
-                <AddPostForm
-                  title={'Add'}
-                  editorState={this.state.editorState}
-                  onEditorChange={this.onEditorChange}
-                  onSubmit={this.onSubmit}
-                />
+                <AddPostForm title={'Add'} editorState={this.state.editorState} onEditorChange={this.onEditorChange} onSubmit={this.onSubmit} />
               </Card>
             </Col>
             <Col span={2} />
@@ -63,7 +58,7 @@ class AddPost extends Component {
   }
 }
 
-const AddPostWrapped = withRedux(makeStore, (state) => ({
-  user: state.user,
+const AddPostWrapped = withRedux(makeStore, state => ({
+  user: state.user.profile,
 }))(AddPost);
 export default AddPostWrapped;

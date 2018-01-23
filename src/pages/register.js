@@ -38,18 +38,12 @@ class Register extends React.Component {
                   window.location.reload();
                 })
                 .catch((error) => {
-                  message.error(
-                    error.response
-                      ? error.response.data.message
-                      : error.message,
-                  );
+                  message.error(error.response ? error.response.data.message : error.message);
                 });
             }, 2000);
           })
           .catch((error) => {
-            message.error(
-              error.response ? error.response.data.message : error.message,
-            );
+            message.error(error.response ? error.response.data.message : error.message);
           });
       });
     };
@@ -76,7 +70,7 @@ class Register extends React.Component {
   }
 }
 
-const RegisterWrapped = withRedux(makeStore, (state) => ({
-  user: state.user,
+const RegisterWrapped = withRedux(makeStore, state => ({
+  user: state.user.profile,
 }))(Register);
 export default RegisterWrapped;

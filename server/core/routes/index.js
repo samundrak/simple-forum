@@ -6,8 +6,8 @@ const router = express.Router();
 
 module.exports = () => {
   router.get('/verify/:hash', auth.verifyHash);
-  router.post("/authorize", auth.generateToken);
+  router.post('/authorize', auth.generateToken);
   router.get('/reset/:hash', auth.verifyResetLink);
-  //viewsRoutes(router);
+  viewsRoutes(router);
   return router;
 };

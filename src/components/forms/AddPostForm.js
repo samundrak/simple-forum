@@ -4,11 +4,7 @@ import { Form, Input, Button } from 'antd';
 
 const FormItem = Form.Item;
 
-const AddPostForm = ({
-  editorState,
-  onSubmit,
-  form: { getFieldDecorator, validateFields },
-}) => (
+const AddPostForm = ({ title, editorState, onSubmit, form: { getFieldDecorator, validateFields } }) => (
   <Form className="register-form" onSubmit={onSubmit(validateFields)}>
     <FormItem>
       Title
@@ -26,7 +22,7 @@ const AddPostForm = ({
     </FormItem>
     <FormItem>
       <Button type="primary" htmlType="submit" className="register-form-button">
-        Create
+        {title}
       </Button>
     </FormItem>
   </Form>

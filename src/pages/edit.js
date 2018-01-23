@@ -78,20 +78,13 @@ class EditPost extends Component {
               <Card
                 title="Edit Post"
                 extra={
-                  <Link
-                    as={`/post/${this.state.editorState._id}`}
-                    href={`/post?id=${this.state.editorState._id}`}
-                  >
+                  <Link as={`/post/${this.state.editorState._id}`} href={`/post?id=${this.state.editorState._id}`}>
                     <a>Go Back</a>
                   </Link>
                 }
               >
                 <Spin spinning={this.state.loading}>
-                  <AddPostForm
-                    title={'Edit'}
-                    editorState={this.state.editorState}
-                    onSubmit={this.onSubmit}
-                  />
+                  <AddPostForm title={'Update'} editorState={this.state.editorState} onSubmit={this.onSubmit} />
                 </Spin>
               </Card>
             </Col>
@@ -102,7 +95,7 @@ class EditPost extends Component {
     );
   }
 }
-const EditWrapped = withRedux(makeStore, (state) => ({
-  user: state.user,
+const EditWrapped = withRedux(makeStore, state => ({
+  user: state.user.profile,
 }))(EditPost);
 export default EditWrapped;

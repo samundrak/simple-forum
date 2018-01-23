@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import autoBind from 'auto-bind';
 import Router from 'next/router';
 import Head from 'next/head';
-import { message, Spin } from 'antd';
+import renderIf from 'render-if';
+import { message, Spin, Alert } from 'antd';
 import withRedux from 'next-redux-wrapper';
 import makeStore from '../store/index';
 import { getPost, deletePost } from '../api/calls';
@@ -38,7 +39,7 @@ class PostPage extends Component {
     };
   }
 
-  handleDelete = (post) => (event) => {
+  handleDelete = post => (event) => {
     event.preventDefault();
     this.setState({ loading: true });
     deletePost(post._id)
@@ -58,16 +59,10 @@ class PostPage extends Component {
       <App>
         <Spin spinning={this.state.loading}>
           <Head>{this.state.post.title}</Head>
-          <Post
-            handleDelete={this.handleDelete}
-            handleEdit={this.handleEdit}
-            post={this.state.post}
-            user={this.props.user}
-          />
-          <CommentsContainer
-            user={this.props.user}
-            postId={this.props.url.query.id}
-          />
+          <Post handleDelete={this.handleDelete} handleEdit={this.handleEdit} post={this.state.post} user={this.props.user} />
+          {renderIf(this.props.user._id)(<CommentsContainer user={this.props.user} postId={this.props.url.query.id} />)}
+          <br />
+          {renderIf(!this.props.user._id)(<Alert message="Warning" description="Please login to comment." type="warning" showIcon />)}
         </Spin>
       </App>
     );
@@ -78,7 +73,7 @@ PostPage.propTypes = {
   user: PropTypes.object.isRequired,
   url: PropTypes.object.isRequired,
 };
-const wrapped = withRedux(makeStore, (state) => ({
-  user: state.user,
+const wrapped = withRedux(makeStore, state => ({
+  user: state.user.profile,
 }))(PostPage);
 export default wrapped;

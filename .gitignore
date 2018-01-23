@@ -8,3 +8,4 @@ report.html
 dump.rdb
 storage/logs
 src/.next/
+server/src/.next/

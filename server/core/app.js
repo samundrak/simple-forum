@@ -17,16 +17,16 @@ const helper = require('./utils/helper');
 const winstonLogsDisplay = require('winston-logs-display');
 const next = require('next');
 
-
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev, dir: path.join(__dirname, '../../src') });
 const handle = nextApp.getRequestHandler();
 
-nextApp.prepare()
+nextApp
+  .prepare()
   .then(() => {
     const app = express();
     app.set('env', process.env.NODE_ENV);
-    global.config = () => (appConfig);
+    global.config = () => appConfig;
     global.events = new events.EventEmitter();
     global.helper = helper;
     global.Promsie = Promise;
@@ -81,6 +81,16 @@ nextApp.prepare()
     app.use('/api', apiRoutes);
     app.use('/api/auth', auth.authenticate(), authApiRoutes);
     app.use('/', routes);
+    app.get('/post/:id', (req, res) => {
+      const actualPage = '/post';
+      const queryParams = { id: req.params.id };
+      nextApp.render(req, res, actualPage, queryParams);
+    });
+    app.get('/post/edit/:id', (req, res) => {
+      const actualPage = '/edit';
+      const queryParams = { id: req.params.id };
+      nextApp.render(req, res, actualPage, queryParams);
+    });
     app.get('*', (req, res) => handle(req, res));
 
     // catch 404 and forward to error handler
@@ -97,34 +107,26 @@ nextApp.prepare()
     app.use((err, req, res, next) => {
       if (app.get('env') === 'development') {
         if (req.path.indexOf('api') > -1) {
-          return res
-            .status(err.status || 500)
-            .json({
-              message: err.message,
-              error: err,
-            });
-        }
-        return res
-          .status(err.status || 500)
-          .render('error', {
+          return res.status(err.status || 500).json({
             message: err.message,
             error: err,
           });
+        }
+        return res.status(err.status || 500).render('error', {
+          message: err.message,
+          error: err,
+        });
       }
       if (req.path.indexOf('api') > -1) {
-        return res
-          .status(err.status || 500)
-          .json({
-            message: err.message,
-            error: err,
-          });
-      }
-      return res
-        .status(err.status || 500)
-        .render('error', {
-          message: 'Some Error Occurred',
-          error: '',
+        return res.status(err.status || 500).json({
+          message: err.message,
+          error: err,
         });
+      }
+      return res.status(err.status || 500).render('error', {
+        message: 'Some Error Occurred',
+        error: '',
+      });
     });
 
     const server = app.listen(port, (err) => {
@@ -141,13 +143,13 @@ nextApp.prepare()
   });
 
 // // NOTE: event name is camelCase as per node convention
-process.on("unhandledRejection", (reason, promise) => {
+process.on('unhandledRejection', (reason, promise) => {
   // See Promise.onPossiblyUnhandledRejection for parameter documentation
   console.log(reason.status);
 });
 
 // NOTE: event name is camelCase as per node convention
-process.on("rejectionHandled", (promise) => {
+process.on('rejectionHandled', (promise) => {
   // See Promise.onUnhandledRejectionHandled for parameter documentation
   console.log(promise);
 });

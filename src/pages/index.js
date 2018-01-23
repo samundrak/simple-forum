@@ -29,17 +29,8 @@ class Home extends React.Component {
       <App>
         <Row>
           <Col span={20}>
-            {renderIf(this.state.posts.length)(
-              <Posts user={{}} posts={this.state.posts} />,
-            )}
-            {renderIf(!this.state.posts.length)(
-              <Alert
-                message="No Posts"
-                description="Sorry, there are no posts."
-                type="info"
-                showIcon
-              />,
-            )}
+            {renderIf(this.state.posts.length)(<Posts user={{}} posts={this.state.posts} />)}
+            {renderIf(!this.state.posts.length)(<Alert message="No Posts" description="Sorry, there are no posts." type="info" showIcon />)}
           </Col>
         </Row>
       </App>
@@ -49,7 +40,7 @@ class Home extends React.Component {
 Home.propTypes = {
   user: PropTypes.object.isRequired,
 };
-const wrappedHome = withRedux(makeStore, (state) => ({
-  user: state.user,
+const wrappedHome = withRedux(makeStore, state => ({
+  user: state.user.profile,
 }))(Home);
 export default wrappedHome;

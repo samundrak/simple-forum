@@ -11,19 +11,16 @@ import { setToken } from './core/helpers';
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      user: {},
-    };
+    this.state = {};
   }
 
   componentDidMount() {
     profile()
       .then(({ data }) => {
-        this.setState({ user: data });
-        this.props.actions.loginSuccess(data);
+        this.props.actions.profileSuccess(data);
       })
       .catch(() => {
-        this.setState({ user: {} });
+        this.props.actions.profileFailed();
       });
   }
   handleMenuClick(arg) {
@@ -36,10 +33,11 @@ class App extends Component {
         break;
     }
   }
+
   render() {
     return (
-      <Layout user={this.state.user} handleMenuClick={this.handleMenuClick}>
-        {React.cloneElement(this.props.children, { user: this.state.user })}
+      <Layout user={this.props.user} handleMenuClick={this.handleMenuClick}>
+        {React.cloneElement(this.props.children, { user: this.props.user })}
       </Layout>
     );
   }
@@ -49,15 +47,13 @@ App.propTypes = {
   children: PropTypes.element.isRequired,
   actions: PropTypes.object.isRequired,
 };
-const mapActionToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(actions, dispatch),
-  };
-};
+const mapActionToProps = dispatch => ({
+  actions: bindActionCreators(actions, dispatch),
+});
 
 const wrappedApp = connect(
-  (state) => ({
-    user: state.user,
+  state => ({
+    user: state.user.profile,
   }),
   mapActionToProps,
 )(App);

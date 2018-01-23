@@ -36,9 +36,7 @@ class Login extends Component {
             window.location.reload();
           })
           .catch((error) => {
-            message.error(
-              error.response ? error.response.data.message : error.message,
-            );
+            message.error(error.response ? error.response.data.message : error.message);
           });
       });
     };
@@ -65,7 +63,7 @@ class Login extends Component {
   }
 }
 
-const LoginWrapped = withRedux(makeStore, (state) => ({
-  user: state.user,
+const LoginWrapped = withRedux(makeStore, state => ({
+  user: state.user.profile,
 }))(Login);
 export default LoginWrapped;
