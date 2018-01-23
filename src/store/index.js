@@ -22,15 +22,17 @@ if (!isProd) {
 composed.push(applyMiddleware(...middleware));
 if (!isProd) {
   if (typeof window !== 'undefined') {
-    try {
-      composed.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-    } catch (err) {
-      console.log(err);
-    }
+    composed.push(
+      window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__(),
+    );
   }
 }
 export default function configureStore(initialState) {
-  const devCreateStore = compose(...composed)(createStore);
-
-  return devCreateStore(combineReducers({ user: reducer }), initialState);
+  try {
+    const devCreateStore = compose(...composed)(createStore);
+    return devCreateStore(combineReducers({ user: reducer }), initialState);
+  } catch (err) {
+    return createStore(combineReducers({ user: reducer }));
+  }
 }

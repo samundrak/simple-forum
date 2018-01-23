@@ -1,8 +1,14 @@
 import React from 'react';
-import { Spin, message } from 'antd';
+import { Spin, message, Alert } from 'antd';
 import autoBind from 'auto-bind';
 import PropTypes from 'prop-types';
-import { getComments, deleteComment, postNewComment, updateComment } from '../api/calls';
+import renderIf from 'render-if';
+import {
+  getComments,
+  deleteComment,
+  postNewComment,
+  updateComment,
+} from '../api/calls';
 import Comments from '../components/Comments';
 import CommentBox from '../components/CommentBox';
 
@@ -32,18 +38,22 @@ class CommentsContainers extends React.Component {
       }
       return postNewComment(this.props.postId, values)
         .then(({ data }) => {
-          const comments = [].concat(this.state.comments, [{ ...data, user: this.props.user }]);
+          const comments = [].concat(this.state.comments, [
+            { ...data, user: this.props.user },
+          ]);
           this.setState({ comments });
           setFieldsValue({ comment: null });
         })
         .catch((err) => {
-          message.err(err.response ? err.response.data.message : 'Unknown error occured');
+          message.err(
+            err.response ? err.response.data.message : 'Unknown error occured',
+          );
         });
     });
   };
   updateLocalComment(commentId, { comment }) {
     const comments = [].concat(this.state.comments);
-    const oldCommentIndex = comments.findIndex(c => c._id === commentId); // eslint-disable-line
+    const oldCommentIndex = comments.findIndex((c) => c._id === commentId); // eslint-disable-line
     if (oldCommentIndex < 0) return;
     comments[oldCommentIndex].comment = comment;
     this.setState({ comments });
@@ -54,7 +64,7 @@ class CommentsContainers extends React.Component {
       return deleteComment(this.props.postId, comment._id)
         .then(() => {
           const comments = [].concat(this.state.comments);
-          const commentIndex = comments.findIndex(c => c._id === comment._id); // eslint-disable-line
+          const commentIndex = comments.findIndex((c) => c._id === comment._id); // eslint-disable-line
           if (commentIndex < 0) return;
           comments.splice(commentIndex, 1);
           this.setState({ comments });
@@ -98,7 +108,17 @@ class CommentsContainers extends React.Component {
           handleCommentUpdate={this.handleCommentUpdate}
           comments={this.state.comments}
         />
-        <CommentBox onSubmit={this.handleCommentSubmit} />
+        {renderIf(this.props.user._id)(
+          <CommentBox onSubmit={this.handleCommentSubmit} />,
+        )}
+        {renderIf(!this.props.user._id)(
+          <Alert
+            message="Warning"
+            description="Please login to comment."
+            type="warning"
+            showIcon
+          />,
+        )}
       </Spin>
     );
   }
