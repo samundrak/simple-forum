@@ -59,6 +59,17 @@ class PostPage extends Component {
       <App>
         <Spin spinning={this.state.loading}>
           <Head>{this.state.post.title}</Head>
+          <Post
+            expand
+            handleDelete={this.handleDelete}
+            handleEdit={this.handleEdit}
+            post={this.state.post}
+            user={this.props.user}
+          />
+          <CommentsContainer
+            user={this.props.user}
+            postId={this.props.url.query.id}
+          />
           <Post handleDelete={this.handleDelete} handleEdit={this.handleEdit} post={this.state.post} user={this.props.user} />
           {renderIf(this.props.user._id)(<CommentsContainer user={this.props.user} postId={this.props.url.query.id} />)}
           <br />
