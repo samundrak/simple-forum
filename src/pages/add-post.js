@@ -2,12 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { Row, Col, Card, message } from 'antd';
 import autoBind from 'auto-bind';
 import Router from 'next/router';
-import withRedux from 'next-redux-wrapper';
 import Head from 'next/head';
 import App from '../App';
 import AddPostForm from '../components/forms/AddPostForm';
 import { postNewPost } from '../api/calls';
-import makeStore from '../store/index';
+import withProtection from '../components/withProtection';
 
 class AddPost extends Component {
   constructor() {
@@ -58,7 +57,4 @@ class AddPost extends Component {
   }
 }
 
-const AddPostWrapped = withRedux(makeStore, state => ({
-  user: state.user.profile,
-}))(AddPost);
-export default AddPostWrapped;
+export default withProtection(AddPost);

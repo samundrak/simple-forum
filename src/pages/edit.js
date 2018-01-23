@@ -4,11 +4,10 @@ import { Row, Col, Spin, Card, message } from 'antd';
 import Head from 'next/head';
 import Router from 'next/router';
 import Link from 'next/link';
-import withRedux from 'next-redux-wrapper';
 import App from '../App';
 import AddPostForm from '../components/forms/AddPostForm';
 import { getPost, updatePost } from '../api/calls';
-import makeStore from '../store/index';
+import withProtection from '../components/withProtection';
 
 class EditPost extends Component {
   constructor() {
@@ -95,7 +94,4 @@ class EditPost extends Component {
     );
   }
 }
-const EditWrapped = withRedux(makeStore, state => ({
-  user: state.user.profile,
-}))(EditPost);
-export default EditWrapped;
+export default withProtection(EditPost);

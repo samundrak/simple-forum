@@ -16,6 +16,11 @@ class Register extends React.Component {
       form: {},
     };
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user._id) {
+      Router.push('/');
+    }
+  }
   handleSubmit(validateFields) {
     return (event) => {
       event.preventDefault();
@@ -71,6 +76,6 @@ class Register extends React.Component {
 }
 
 const RegisterWrapped = withRedux(makeStore, state => ({
-  user: state.user.profile,
+  user: state.user,
 }))(Register);
 export default RegisterWrapped;

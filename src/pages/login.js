@@ -19,6 +19,11 @@ class Login extends Component {
       },
     };
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user._id) {
+      Router.push('/');
+    }
+  }
   handleSubmit(validateFields) {
     return (event) => {
       event.preventDefault();
