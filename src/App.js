@@ -15,6 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    if (Object.keys(this.props.user).length) return;
     profile()
       .then(({ data }) => {
         this.props.actions.profileSuccess(data);

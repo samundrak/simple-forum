@@ -7,7 +7,7 @@ const formalStringType = {
 };
 const Comment = mongoose.Schema({
   post_id: formalStringType,
-  user_id: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'users',
   },

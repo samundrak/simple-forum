@@ -36,11 +36,8 @@ class Register extends React.Component {
               const { email, password } = values;
               login({ email, password })
                 .then(({ data }) => {
-                  Router.push({
-                    pathname: '/',
-                  });
                   setToken(data.token);
-                  window.location.reload();
+                  window.location.href = '/';
                 })
                 .catch((error) => {
                   message.error(error.response ? error.response.data.message : error.message);

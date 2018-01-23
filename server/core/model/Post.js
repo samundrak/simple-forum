@@ -8,7 +8,7 @@ const formalStringType = {
 const Post = mongoose.Schema({
   title: formalStringType,
   description: formalStringType,
-  user_id: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'users',
   },

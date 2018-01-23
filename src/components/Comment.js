@@ -21,6 +21,7 @@ class Comment extends React.Component {
     this.setState({ isEditMode: !this.state.isEditMode });
   }
   render() {
+    const { comment } = this.props;
     return (
       <Card
         style={{ marginTop: 16 }}
@@ -29,19 +30,14 @@ class Comment extends React.Component {
         extra={
           <Fragment>
             <Tag>
-              {distanceInWords(this.props.comment.created_at, new Date())} ago
+              {distanceInWords(comment.created_at, new Date())} ago by {comment.user.first_name} {comment.user.last_name}
             </Tag>
-            {renderIf(this.props.user._id === this.props.comment.user_id)(
+            {renderIf(this.props.user._id === comment.user._id)(
               <Fragment>
                 <a onClick={this.handleEditMode} role="none">
                   Edit
                 </a>{' '}
-                <Popconfirm
-                  title="Are you sure delete this comment?"
-                  onConfirm={this.props.handleDelete(this.props.comment)}
-                  okText="Yes"
-                  cancelText="No"
-                >
+                <Popconfirm title="Are you sure to delete this comment?" onConfirm={this.props.handleDelete(comment)} okText="Yes" cancelText="No">
                   <a href="#">Delete</a>
                 </Popconfirm>
               </Fragment>,
@@ -49,13 +45,8 @@ class Comment extends React.Component {
           </Fragment>
         }
       >
-        {renderIf(!this.state.isEditMode)(this.props.comment.comment)}
-        {renderIf(this.state.isEditMode)(
-          <CommentBox
-            onSubmit={this.props.handleEdit}
-            comment={this.props.comment}
-          />,
-        )}
+        {renderIf(!this.state.isEditMode)(comment.comment)}
+        {renderIf(this.state.isEditMode)(<CommentBox onSubmit={this.props.handleEdit} comment={comment} />)}
       </Card>
     );
   }

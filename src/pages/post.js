@@ -18,7 +18,7 @@ class PostPage extends Component {
   constructor() {
     super();
     autoBind(this);
-    this.state = { post: {}, loading: false, comments: [] };
+    this.state = { post: { user: {} }, loading: false, comments: [] };
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentDidMount() {

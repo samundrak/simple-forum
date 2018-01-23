@@ -22,7 +22,11 @@ if (!isProd) {
 composed.push(applyMiddleware(...middleware));
 if (!isProd) {
   if (typeof window !== 'undefined') {
-    composed.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    try {
+      composed.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 export default function configureStore(initialState) {

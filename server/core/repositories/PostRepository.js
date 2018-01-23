@@ -3,7 +3,7 @@ const PostModel = require('../model/Post');
 class PostRepository {
   static all(clause = {}) {
     return PostModel.find({ ...clause, is_deleted: 0 })
-      .populate('users', 'first_name')
+      .populate('user', 'email first_name _id last_name')
       .sort({
         created_at: 'desc',
       });
@@ -14,7 +14,7 @@ class PostRepository {
   }
 
   static findOne(clause) {
-    return PostModel.findOne({ ...clause, is_deleted: 0 }).populate('users');
+    return PostModel.findOne({ ...clause, is_deleted: 0 }).populate('user', 'email first_name _id last_name');
   }
 }
 

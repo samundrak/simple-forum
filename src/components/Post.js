@@ -11,8 +11,10 @@ const Post = ({ post, user, handleDelete }) => (
     title={post.title}
     extra={
       <Fragment>
-        <Tag>{distanceInWords(post.created_at, new Date())} ago</Tag>
-        {user._id !== post.user_id ? (
+        <Tag>
+          {distanceInWords(post.created_at, new Date())} ago by {post.user.first_name} {post.user.last_name}
+        </Tag>
+        {user._id !== post.user._id ? (
           <Link as={`/post/${post._id}`} href={`/post?id=${post._id}`}>
             <a>More</a>
           </Link>
@@ -21,12 +23,7 @@ const Post = ({ post, user, handleDelete }) => (
             <Link as={`/post/edit/${post._id}`} href={`/edit?id=${post._id}`}>
               <a>Edit</a>
             </Link>{' '}
-            <Popconfirm
-              title="Are you sure delete this post?"
-              onConfirm={handleDelete(post)}
-              okText="Yes"
-              cancelText="No"
-            >
+            <Popconfirm title="Are you sure delete this post?" onConfirm={handleDelete(post)} okText="Yes" cancelText="No">
               <a href="#">Delete</a>
             </Popconfirm>
           </Fragment>

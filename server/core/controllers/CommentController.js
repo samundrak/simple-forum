@@ -18,7 +18,7 @@ const commentController = {
     try {
       const comment = await CommentRepository.create({
         ...req.body,
-        user_id: req.user._id,
+        user: req.user._id,
         post_id: req.params.postId,
       });
       if (comment) {
@@ -35,7 +35,7 @@ const commentController = {
     try {
       const comment = await CommentRepository.findOne({
         post_id: req.params.postId,
-        user_id: req.user._id,
+        user: req.user._id,
         _id: req.params.commentId,
       });
       if (!comment) {
