@@ -13,13 +13,17 @@
     "mongo": "sudo mongod",
     "dep": "npm-run-all --parallel mongo maildev",
     "seed": "node ./seeds/index.js",
+    "heroku-postbuild": "./node_modules/next/dist/bin/next build src/ && touch .env",
+    "build": "next build src/",
     "test": "./node_modules/.bin/mocha test/server/**/**.js"
   },
   "dependencies": {
     "antd": "^3.1.4",
     "auto-bind": "1.1.0",
     "axios": "0.15.2",
-    "bcrypt": "0.8.7",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "bcrypt": "^3.0.4",
     "bluebird": "3.5.0",
     "body-parser": "1.15.2",
     "chai": "^4.1.2",
